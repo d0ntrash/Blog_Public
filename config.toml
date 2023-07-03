@@ -1,0 +1,44 @@
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "d0ntrash"
+theme = "hugo-theme-hello-friend-ng"
+
+[params]
+    homeSubtitle = "Security related posts and writeups"
+    disableReadOtherPosts = false
+    enableSharingButtons = true
+    description = "CTF writeups and blog posts"
+    keywords = "homepage, blog, ctf, hacking"
+    images = [""]
+
+
+[taxonomies]
+    category = "blog"
+    tag      = "tags"
+    series   = "series"
+
+[[menu.main]]
+    identifier = "blog"
+    name       = "Blog"
+    url        = "/posts"
+
+[[menu.main]]
+    identifier = "writeups"
+    name       = "Writeups"
+    url        = "/writeups"
+
+[[params.social]]
+  name = "twitter"
+  url = "https://twitter.com/d0ntrash"
+
+[[params.social]]
+  name = "github"
+  url = "https://github.com/d0ntrash"
+
+[[params.social]]
+  name = "mastodon"
+  url = "https://chaos.social/@d0ntrash"  
+
+[markup.goldmark.renderer]
+  unsafe = true
+

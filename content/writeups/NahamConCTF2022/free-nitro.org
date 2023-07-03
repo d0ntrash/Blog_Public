@@ -6,12 +6,12 @@
 This was actually the first time seeing the category "Malware" in a CTF.
 I did not solve this challenge during the ctf but figgured out how to solve it afterwards.
 * Challenge
-  [[file:/free_nitro_description.png]]
+  [[/blog/free_nitro_description.png]]
 
   As you can see the challenge had quiete a few solves. After the ctf I found out, there is an easy way to solve this challenge.
   I am not sure if this was intended but since this would be to easy for a medium challenge I don't think so.
 ** Solving it the easy way
-   [[file:/free_nitro_virus_total.png]]
+   [[/blog/free_nitro_virus_total.png]]
 
    Turns out you just have to upload the file to VirusTotal and check the behavior report.
 ** Not solving it the hard way
@@ -25,7 +25,7 @@ I did not solve this challenge during the ctf but figgured out how to solve it a
    to read. After having a short look at the code it was clear, that this executable is some kind of loader for some encrypted content.
    I noticed a ~decrypt~ function which sounds prommising.
 
-   [[file:/free_nitro_decrypt_fn.png]]
+   [[/blog/free_nitro_decrypt_fn.png]]
 
    So I put a breakpoit at the return of the decrypt function and saved the result to disk. The function gets called twice, so I got two more files to
    look at.
@@ -40,7 +40,7 @@ I did not solve this challenge during the ctf but figgured out how to solve it a
 
    After checking if these files contain the flag in plain text I stepped further through the code until the decrypted content got loaded as modules.
 
-   [[file:/free_nitro_modules.png]]
+   [[/blog/free_nitro_modules.png]]
 
    There are three new modules loaded into memeory. The only one which is not obfuscated is the Client.exe. So I looked at this one first.
    The Client.exe seems to take care of the basic C2 communication to exfiltrate data. My initial guess was that I need to find the Host we are
@@ -48,12 +48,12 @@ I did not solve this challenge during the ctf but figgured out how to solve it a
 
    So the ~InitializeSettings()~ function where the hostname, port and some other stuff gets decrypted sound promising.
 
-   [[file:/free_nitro_settings_init.png]]
+   [[/blog/free_nitro_settings_init.png]]
 
    After hitting the breakpoint in the Initialize function I realized that the host and port was "REMOVED FOR SAFETY". Which makes sense since we are dealing with malware here :D
    So i thougt this might be a dead end and I moved on to the ~discordTokenStealer.dll~.
 
-   [[file:/free_nitro_token_stealer.png]]
+   [[/blog/free_nitro_token_stealer.png]]
 
    As it turned out this was a stupid idea. The ~discordTokenStealer.dll~ seems to be obfuscated and I wasted quite a bit of time reversing it. But as it turns out there is no flag in there either.
 ** Solving it the right way
@@ -62,12 +62,12 @@ I did not solve this challenge during the ctf but figgured out how to solve it a
 
    So back to the ~Client.exe~ I checked out where the encrypted data like host, port and server_signature is stored. And look at this, there is also the encoded and encrypted flag...
 
-   [[file:/free_nitro_enc_flag.png]]
+   [[/blog/free_nitro_enc_flag.png]]
 
    To decrypt the flag I places a breakpoint at the ~Decrypt~ function and replaced the input value by the ecrypted flag.
 
-   [[file:/free_nitro_dec_flag.png]]
+   [[/blog/free_nitro_dec_flag.png]]
 
    After hitting the next breakpoint which I placed at the point where the decrypted value is returned, I saved the return value to a file which contains the decrypted flag.
 
-   [[file:/free_nitro_return_flag.png]]
+   [[/blog/free_nitro_return_flag.png]]

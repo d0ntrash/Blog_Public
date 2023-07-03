@@ -15,11 +15,11 @@
    :END:
    The challenge binary has only a few functions. In the ~main~ function not much happens besides ~getFeedback~ getting called in a ~while(true)~ loop:
 
-   [[/blog/data/01/6f2d9c-2fde-478c-bb03-5f140e01edca/screenshot-20230116-135923.png]]
+   [[file:/data/01/6f2d9c-2fde-478c-bb03-5f140e01edca/screenshot-20230116-135923.png]]
 
    The interesting parts are in the ~getFeedback~ function:
 
-   [[/blog/data/01/6f2d9c-2fde-478c-bb03-5f140e01edca/screenshot-20230116-140358.png]]
+   [[file:/data/01/6f2d9c-2fde-478c-bb03-5f140e01edca/screenshot-20230116-140358.png]]
 
    In both read functions there is a buffer overflow. However as we can see at the end of the function, the binary also uses stack canaries.
    So we can't just overflow the buffer to overwrite the return address because the ~__stack_chk_fail()~ check would fail.
@@ -31,7 +31,7 @@
     To overflow the buffer without crashing the process we first need to leak the canary. Luckily, we can use the first
     ~read()~ call followed by the ~printf()~ call to leak the canary, then write the correct canary back using the second ~read()~ call.
 
-    [[/blog/data/f1/e4da43-eb15-4633-84cb-dac644906a77/screenshot-20230116-142422.png]]
+    [[file:/data/f1/e4da43-eb15-4633-84cb-dac644906a77/screenshot-20230116-142422.png]]
 
     In this case the canary is ~0x4f4bde881e0f0f00~ and comes directly after the input buffer. On Linux a stack canary always starts with a NULL byte.
     Since ~printf()~ always prints up to the next NULL byte we simply have to overflow the buffer by one byte to overwrite the NULL byte to print the
@@ -56,7 +56,7 @@
 
     After the overflow the stack looks like this:
 
-    [[/blog/data/f1/e4da43-eb15-4633-84cb-dac644906a77/screenshot-20230116-143231.png]]
+    [[file:/data/f1/e4da43-eb15-4633-84cb-dac644906a77/screenshot-20230116-143231.png]]
 
     Now that we know the canary, we can use the second ~read()~ call to write it back to the stack.
 
@@ -84,7 +84,7 @@
     From here we could try to leak a libc address to ret2libc. In this case however, the binary contains a ~win~ function we can use
     which reads a file and prints its content:
 
-    [[/blog/data/f1/e4da43-eb15-4633-84cb-dac644906a77/screenshot-20230116-150202.png]]
+    [[file:/data/f1/e4da43-eb15-4633-84cb-dac644906a77/screenshot-20230116-150202.png]]
 
     Unfortunately, just overwriting the return address with the win address wont work since the ~win~ function takes 3 characters of the
     filename as parameters. The parameters are passed via the registers ~rdi~, ~rsi~ and ~rdx~. The registers ~rsi~ and ~rdi~ can be set
@@ -116,4 +116,4 @@
 
     This will read the flag from the ~flag.txt~ file and print it to stdout.
 
-    [[/blog/data/f1/e4da43-eb15-4633-84cb-dac644906a77/screenshot-20230116-152138.png]]
+    [[file:/data/f1/e4da43-eb15-4633-84cb-dac644906a77/screenshot-20230116-152138.png]]

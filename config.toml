@@ -1,4 +1,4 @@
-baseURL = "https://d0ntrash.github.io/Blog_Public/"
+baseURL = "https://d0ntrash.github.io/blog/"
 languageCode = "en-us"
 title = "d0ntrash"
 theme = "hugo-theme-hello-friend-ng"

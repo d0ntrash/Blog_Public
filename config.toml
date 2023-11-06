@@ -1,7 +1,20 @@
 baseURL = "https://blog.d0ntrash.de/"
 languageCode = "en-us"
 title = "d0ntrash"
-theme = "hugo-theme-hello-friend-ng"
+theme = "hello-friend-ng"
+
+PygmentsCodeFences = true
+PygmentsStyle = "monokai"
+
+enableRobotsTXT = true
+enableGitInfo   = false
+enableEmoji     = true
+enableMissingTranslationPlaceholders = false
+disableRSS     = false
+disableSitemap = false
+disable404     = false
+disableHugoGeneratorInject = false
+
 
 [params]
     homeSubtitle = "Security related posts and writeups"
@@ -10,6 +23,7 @@ theme = "hugo-theme-hello-friend-ng"
     description = "CTF writeups and blog posts"
     keywords = "homepage, blog, ctf, hacking"
     images = [""]
+    enableThemeToggle = true
 
 
 [taxonomies]
@@ -41,4 +55,6 @@ theme = "hugo-theme-hello-friend-ng"
 
 [markup.goldmark.renderer]
   unsafe = true
+
+
 

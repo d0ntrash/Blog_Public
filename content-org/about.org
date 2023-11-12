@@ -1,0 +1,28 @@
+#+hugo_base_dir: ../
+#+HUGO_CUSTOM_FRONT_MATTER: :author "Konstantin Bücheler"
+#+HUGO_PAIRED_SHORTCODES: admonition
+* DONE About Me
+CLOSED: [2023-11-11 Sat 12:00]
+:PROPERTIES:
+:EXPORT_FILE_NAME: about
+:EXPORT_HUGO_SECTION: /
+:END:
+
+Hello and welcome! My name is Konstantin, also known as d0ntrash on most platforms. I am a student, security researcher and hacker.
+I focus on low-level topics such as Linux and Windows internals, embedded systems, and fuzzing.
+
+This is my personal blog where I want to share a few of my mostly security-related projects.
+I do this for fun and to force myself to write down what I learned so I don't forget it the week after.
+
+Currently, I am doing my Master's degree in IT Security at TU Darmstadt while gathering some experience in vulnerability research.
+My goal is to work as an independent freelancer after my graduation.
+After finishing my bachelor's degree, I worked as a pentester and security consultant for about two years.
+
+** Contact 
+- [[https://chaos.social/@d0ntrash][Mastodon]]
+- [[https://twitter.com/d0ntrash][Twitter]]
+- [[https://github.com/d0ntrash][GitHub]]
+- [[https://www.linkedin.com/in/konstantin-bücheler-118045137][LinkedIn]]
+- [[mailto:k.buecheler@pm.me][Email]]
+
+

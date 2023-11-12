@@ -1,15 +1,32 @@
 baseURL = "https://blog.d0ntrash.de/"
 languageCode = "en-us"
 title = "d0ntrash"
-theme = "hugo-theme-hello-friend-ng"
+theme = "hello-friend-ng"
 
+PygmentsCodeFences = true
+PygmentsStyle = "monokai"
+
+archetypeDir = "archetypes"
+enableRobotsTXT = true
+enableGitInfo   = false
+enableEmoji     = false
+enableMissingTranslationPlaceholders = false
+disableRSS     = false
+disableSitemap = false
+disable404     = false
+disableHugoGeneratorInject = false
+
+[author]
+  name = "Konstantin Bücheler"
+  
 [params]
     homeSubtitle = "Security related posts and writeups"
     disableReadOtherPosts = false
     enableSharingButtons = true
-    description = "CTF writeups and blog posts"
+    description = "Security related posts and writeups"
     keywords = "homepage, blog, ctf, hacking"
     images = [""]
+    enableThemeToggle = true
 
 
 [taxonomies]
@@ -27,9 +44,10 @@ theme = "hugo-theme-hello-friend-ng"
     name       = "Writeups"
     url        = "/writeups"
 
-[[params.social]]
-  name = "twitter"
-  url = "https://twitter.com/d0ntrash"
+[[menu.main]]
+    identifier = "about"
+    name       = "About Me"
+    url        = "/about"
 
 [[params.social]]
   name = "github"
@@ -37,8 +55,34 @@ theme = "hugo-theme-hello-friend-ng"
 
 [[params.social]]
   name = "mastodon"
-  url = "https://chaos.social/@d0ntrash"  
+  url = "https://chaos.social/@d0ntrash"
+
+[[params.social]]
+  name = "twitter"
+  url = "https://twitter.com/d0ntrash"
+
+[[params.social]]
+  name = "linkedin"
+  url = "https://linkedin.com/in/konstantin-bücheler-118045137/"
+
+[[params.social]]
+  name = "email"
+  url  = "mailto:k.buecheler@pm.me"
+
 
 [markup.goldmark.renderer]
   unsafe = true
 
+[params.logo]
+    logoMark     = ">"
+    logoText     = "$ cd /home/d0ntrash"
+    logoHomeLink = "/"
+
+[params.footer]
+    trademark = 2023
+    rss = true
+
+    topText = []
+    bottomText = [
+    "Powered by <a href=\"http://gohugo.io\">Hugo</a> and <a href=\"https://github.com/rhazdon/hugo-theme-hello-friend-ng\">Hello Friend NG</a>"
+    ]

@@ -7,9 +7,13 @@
 CLOSED: [2023-11-05 Sun 16:37]
 :PROPERTIES:
 :EXPORT_FILE_NAME: linux-process-injection
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :header '((image . "preview/thumbnail.jpg") (caption . "Dynamic Library Injection on Linux using Rust."))
 :END:
 #+filetags: linux, rust, ctf
 #+OPTIONS: toc:2
+#+begin_description
+Dynamic Library Injection on Linux using Rust
+#+end_description
 ** Introduction
 This year, I contributed some challenges to the Cyber Security Challenge Germany ([[https://cscg.de/][CSCG]]), a CTF for young IT security talents, which also serves as the German qualification for the European Cyber Security Challenge ([[https://ecsc.eu/][ECSC]]).
 For the on-site finals, I created a small Windows Live Forensics challenge where each team was given RDP access to a Windows server and a scenario where they had to act as incident responders.

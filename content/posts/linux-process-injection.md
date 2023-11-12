@@ -1,9 +1,12 @@
 +++
 title = "Linux Process Injection"
+description = "Dynamic Library Injection on Linux using Rust"
 date = 2023-11-05T16:37:00+01:00
 tags = ["linux,", "rust,", "ctf"]
 draft = false
-author = "Konstantin Bücheler"
+[header]
+  image = "preview/thumbnail.jpg"
+  caption = "Dynamic Library Injection on Linux using Rust."
 +++
 
 <div class="ox-hugo-toc toc">

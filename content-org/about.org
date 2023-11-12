@@ -7,7 +7,9 @@ CLOSED: [2023-11-11 Sat 12:00]
 :EXPORT_FILE_NAME: about
 :EXPORT_HUGO_SECTION: /
 :END:
-
+#+begin_description
+About Me
+#+end_description
 Hello and welcome! My name is Konstantin, also known as d0ntrash on most platforms. I am a student, security researcher and hacker.
 I focus on low-level topics such as Linux and Windows internals, embedded systems, and fuzzing.
 

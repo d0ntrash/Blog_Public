@@ -25,7 +25,7 @@ disableHugoGeneratorInject = false
     enableSharingButtons = true
     description = "Security related posts and writeups"
     keywords = "homepage, blog, ctf, hacking"
-    images = [""]
+    images = ["/preview/thumbnail.jpg"]
     enableThemeToggle = true
 
 

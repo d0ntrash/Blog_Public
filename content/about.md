@@ -1,5 +1,6 @@
 +++
 title = "About Me"
+description = "About Me"
 date = 2023-11-11T12:00:00+01:00
 draft = false
 author = "Konstantin Bücheler"

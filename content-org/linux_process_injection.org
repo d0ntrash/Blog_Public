@@ -7,7 +7,7 @@
 CLOSED: [2023-11-05 Sun 16:37]
 :PROPERTIES:
 :EXPORT_FILE_NAME: linux-process-injection
-:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :header '((image . "preview/favicon-32x32.png") (caption . "Dynamic Library Injection on Linux using Rust."))
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :header '((image . "preview/thumbnail.jpg") (caption . "Dynamic Library Injection on Linux using Rust."))
 :END:
 #+filetags: linux, rust, ctf
 #+OPTIONS: toc:2

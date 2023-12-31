@@ -13,7 +13,6 @@ This is my personal blog where I want to share a few of my mostly security-relat
 I do this for fun and to force myself to write down what I learned so I don't forget it the week after.
 
 Currently, I am doing my Master's degree in IT Security at TU Darmstadt while gathering some experience in vulnerability research.
-My goal is to work as an independent freelancer after my graduation.
 After finishing my bachelor's degree, I worked as a pentester and security consultant for about two years.
 
 

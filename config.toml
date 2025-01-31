@@ -79,7 +79,7 @@ disableHugoGeneratorInject = false
     logoHomeLink = "/"
 
 [params.footer]
-    trademark = 2023
+    trademark = 2025
     rss = true
 
     topText = []

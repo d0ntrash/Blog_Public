@@ -12,9 +12,6 @@ I focus on low-level topics such as Linux and Windows internals, embedded system
 This is my personal blog where I want to share a few of my mostly security-related projects.
 I do this for fun and to force myself to write down what I learned so I don't forget it the week after.
 
-Currently, I am doing my Master's degree in IT Security at TU Darmstadt while gathering some experience in vulnerability research.
-After finishing my bachelor's degree, I worked as a pentester and security consultant for about two years.
-
 
 ## Contact {#contact}
 
